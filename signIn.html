@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+        <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+        <title>南華點名系統</title>
+        <link rel="stylesheet" type ="text/css" href="sign.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="main">
+                <ul>
+                    <span class="title">帳號</span>
+                    <input type="text" id="account">
+                </ul>
+                <ul>
+                    <span class="title">密碼</span>
+                    <input type="text" id="password">
+                    
+                </ul>
+                <input type="button" value="登入" id="login">
+            </div>
+            
+        </div>
+        <script src="js.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyBE5oXkSs0rHF6prEgw_kGm0K-j65oCupY"   ,
+                authDomain: "software-26de8.firebaseapp.com",
+                databaseURL: "https://software-26de8-default-rtdb.firebaseio.com",
+                projectId: "software-26de8",
+                storageBucket: "software-26de8.appspot.com",
+                messagingSenderId: "978433740455",
+                appId: "1:978433740455:web:47195227518cbad57dd582"
+            };
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            import{getDatabase, ref, set,get, child, update, remove}
+            from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+            const db = getDatabase();
+            const dbRef = ref(getDatabase());
+
+            function test(){
+                get(child(dbRef, `108001/password`)).then((v)=>{console.log(v.val())})
+            }
+            function enter(){
+            var pw;
+            get(child(dbRef, `${document.getElementById("account").value}/password`)).then((v)=>{pw=v.val()})
+            get(child(dbRef, `/`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val());
+                snapshot.forEach(function(child) {
+                    var keys=child.key;
+                    console.log("keys="+child.val);
+                    var enteraccount=document.getElementById("account").value;
+                    console.log("enta="+enteraccount);
+                    var enterpw=document.getElementById("password").value;
+                    console.log("enterp="+enterpw)
+                    console.log("p="+pw)
+                    if(enteraccount==keys&&enterpw==pw){
+                        window.parent.location="signed.html?id="+`${enteraccount}`;
+                        parent.mainpw=enterpw;
+                        parent.mainaccount=enteraccount;
+                        alert("登入成功");
+                        
+                    }
+                }
+             )
+             
+            } else {
+                console.log("No data available");
+            }
+            }).catch((error) => {
+            console.error(error);
+            }); 
+            }
+            var login=document.getElementById("login");
+            login.addEventListener("click",enter);
+          </script>
+    </body>
+</html>
